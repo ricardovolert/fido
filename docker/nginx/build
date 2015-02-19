@@ -1,0 +1,9 @@
+#!/bin/bash
+
+rm -rf root.tgz
+
+cd root
+tar cvzf ../root.tgz *
+cd ..
+
+docker build -t xarthisius/nginx:latest .

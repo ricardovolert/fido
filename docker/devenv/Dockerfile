@@ -6,7 +6,7 @@ MAINTAINER xarthisius.kk@gmail.com
 #    echo 'FEATURES="${FEATURES} getbinpkg"' >> /etc/portage/make.conf
 
 RUN emerge-webrsync && \
-    USE="-cxx romio mpi notebook cairo lapack" emerge -1v =ipython-2.2.0 =matplotlib-1.4.0 =numpy-1.8.2 \
+    USE="-cxx romio mpi notebook cairo lapack" emerge -1kv =ipython-2.2.0 =matplotlib-1.4.0 =numpy-1.8.2 \
     	"<mercurial-3.3" dev-python/nose "<cython-0.22" sympy h5py mpi4py && \
     rm -rf /usr/portage/*
 

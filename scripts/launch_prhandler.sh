@@ -3,7 +3,7 @@
 NAME=prhandler
 IMAGE=hub.yt/prhandler:yt
 
-docker pull $IMAGE
+#docker pull $IMAGE
 ( docker rm -f $NAME > /dev/null ; true )
 docker run \
    -d \

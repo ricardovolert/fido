@@ -10,5 +10,6 @@ docker run \
    -p 443:443 \
    -p 80:80 \
    --link registry:registry \
+   --link prhandler:prhandler \
    --name $NAME \
    $IMAGE

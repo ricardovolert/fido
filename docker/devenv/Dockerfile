@@ -6,22 +6,28 @@ MAINTAINER xarthisius.kk@gmail.com
 #    echo 'FEATURES="${FEATURES} getbinpkg"' >> /etc/portage/make.conf
 
 RUN emerge-webrsync && \
-    USE="-cxx romio mpi notebook cairo lapack" emerge -1kv =ipython-2.2.0 =matplotlib-1.4.0 =numpy-1.8.2 \
-    	"<mercurial-3.3" dev-python/nose "<cython-0.22" sympy h5py mpi4py astropy pyregion && \
+    echo "media-video/libav threads x264 vpx" >> /etc/portage/package.use && \
+    echo "dev-vcs/git -perl -gpg -webdav" >> /etc/portage/package.use && \
+    CPPFLAGS="-DNDEBUG" CFLAGS="-O2 -pipe" CXXFLAGS="-O2 -pipe"  USE="-cxx romio mpi notebook cairo lapack nbconvert -bindist" \
+        emerge -1kv ipython matplotlib numpy pytables dev-libs/openssl openssh dev-vcs/git media-video/libav \
+    	"<mercurial-3.3" dev-python/nose "<cython-0.22" sympy h5py mpi4py astropy pyregion scipy gsl dev-python/hglib && \
     rm -rf /usr/portage/*
 
-RUN mkdir -p /usr/local/src && \
-    cd /usr/local/src && \
-    hg clone https://bitbucket.org/MatthewTurk/rockstar && \
-    cd rockstar && \
-    hg update -C tip && \
-    rm -rf .hg && \
-    make lib && \
-    cp librockstar.so /usr/lib64
+ENV PYTHONPATH=/tmp/yt
+
+RUN chmod go+rwx /tmp && \
+    groupadd -g 1000 fido && \
+    useradd -g 1000 -G 1000 -u 1000 -s /bin/bash fido
+
+ADD ./SZpack.v1.1.1.tar.gz /tmp
+ADD ./other_deps.sh /usr/local/bin/other_deps.sh
+RUN bash /usr/local/bin/other_deps.sh
+
+USER fido
 
 ONBUILD RUN cd /tmp && \
     hg clone https://bitbucket.org/yt_analysis/yt && \
     cd yt && \
     hg update -C yt
 
-WORKDIR /tmp/yt
+#WORKDIR /tmp/yt

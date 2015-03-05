@@ -39,4 +39,5 @@ def run_test(image=DEFAULT_IMAGE,
     except docker.errors.APIError as e:
         print("nosetests.xml not found :(")
 
+    dcli.remove_container(contid, force=True)
     os._exit(retcode)

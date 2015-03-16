@@ -17,7 +17,6 @@ server {
 
 	proxy_set_header Host       $http_host;   # required for Docker client sake
 	proxy_set_header X-Real-IP  $remote_addr; # pass on real client IP
-	add_header X-Clacks-Overhead "GNU Terry Pratchett";
 
 	# disable any limits to avoid HTTP 413 for large image uploads
 	# client_max_body_size 0; 
@@ -45,7 +44,6 @@ server {
 	listen 80;
 	server_name use.yt;
 	client_max_body_size 16000M;
-	add_header X-Clacks-Overhead "GNU Terry Pratchett";
 
 	location / {
 		proxy_set_header X-Real-IP $remote_addr;

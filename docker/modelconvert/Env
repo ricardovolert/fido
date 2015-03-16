@@ -1,0 +1,22 @@
+DEBUG=True
+DEVELOPMENT_MODE=True
+MESHLAB_BINARY=/opt/build/meshlab/src/distrib/meshlabserver
+AOPT_BINARY=/usr/local/bin/aopt
+NEXUS_BINARY=/opt/build/nexus2.0/bin/nxsbuild
+MESHLAB_DISPLAY=:99
+ADMINS=root@localhost
+# PYTHONWARNINGS="d"
+DOWNLOAD_PATH=/tmp/downloads
+UPLOAD_PATH=/tmp/uploads
+
+# this acticates email sending feature
+DEFAULT_MAIL_SENDER=test@localhost
+MAIL_PORT=1025
+
+# 256MB POST/PUT limit for dev box, for big models
+# note loading from URI does not have this limitation
+# chunked upload is preferred
+MAX_CONTENT_LENGTH=268435456
+
+# allow loading from all hosts in development
+ALLOWED_DOWNLOAD_HOSTS=*

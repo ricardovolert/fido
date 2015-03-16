@@ -2,8 +2,13 @@ upstream prhandler {
 	server prhandler:8888;
 }
 
+upstream modelconvert {
+	server 192.168.23.2:5001;
+}
+
 server {
 	listen 80;
+	client_max_body_size 100M;
 	server_name fido.ncsa.illinois.edu;
 
 	#ssl on;
@@ -23,6 +28,15 @@ server {
  	location /prhandler/ {
 		auth_basic off;
 		proxy_pass http://prhandler/;
+	}
+ 
+	location /modelconvert {
+		proxy_pass http://192.168.23.2:5001;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Scheme $scheme;
+		proxy_set_header X-Script-Name /modelconvert;
 	}
 }
 

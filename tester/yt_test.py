@@ -20,11 +20,15 @@ def run_test(image=DEFAULT_IMAGE,
              output="unittests.xml",
              build_docs=False):
     print("Using image: %s" % image)
+    workdir = "/tmp/yt"
+    if build_docs:
+        workdir = os.path.join(workdir, "doc")
     dcli = docker.Client(base_url=BASE_URL, timeout=360)
     contid = dcli.create_container(
         image=image,
         command=command,
         volumes=["/mnt/yt"],
+        working_dir=workdir,
     )
     dcli.start(contid,
                binds={"/mnt/data/volumes/yt_data/": {"bind": "/mnt/yt/"}})
@@ -39,14 +43,14 @@ def run_test(image=DEFAULT_IMAGE,
         with open(output, 'w') as fh:
             fh.write(tar.extractfile('nosetests.xml').read())
     except docker.errors.APIError as e:
-        print("nosetests.xml not found :( -> %s" % e)
+        print("nosetests.xml not found :(")
 
     if build_docs:
         try:
             with open("docs.tar", "w") as fh:
                 fh.write(dcli.copy(contid, "/tmp/yt/doc/build/html/").read())
         except docker.errors.APIError as e:
-            print("extracting docs failed :( %s" % e)
+            print("extracting docs failed :(")
 
     dcli.remove_container(contid, force=True)
     os._exit(retcode)

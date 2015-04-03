@@ -9,7 +9,7 @@ RUN emerge-webrsync && \
     echo "media-video/libav threads x264 vpx" >> /etc/portage/package.use && \
     echo "dev-vcs/git -perl -gpg -webdav" >> /etc/portage/package.use && \
     CPPFLAGS="-DNDEBUG" CFLAGS="-O2 -pipe" CXXFLAGS="-O2 -pipe"  USE="-cxx romio mpi notebook cairo lapack nbconvert -bindist" \
-        emerge -1kv ipython matplotlib numpy pytables dev-libs/openssl openssh dev-vcs/git media-video/libav \
+        emerge -1kv ipython matplotlib numpy pytables dev-libs/openssl openssh dev-vcs/git media-video/libav dev-python/numpydoc \
     	"<mercurial-3.3" dev-python/nose "<cython-0.22" sympy h5py mpi4py astropy pyregion scipy gsl dev-python/hglib && \
     rm -rf /usr/portage/*
 

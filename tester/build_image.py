@@ -12,9 +12,18 @@ BASE_URL = os.environ.get('BASE_URL', "tcp://141.142.234.27:2375")
 dockerfile_temp = Template('''FROM hub.yt/yt_analysis/devenv
 ENV PYTHONPATH="/tmp/yt"
 ADD ./$script /tmp/yt/run.sh
+ADD ./build_docs.sh /tmp/yt/build_docs.sh
 WORKDIR /tmp/yt
 RUN bash /tmp/yt/run.sh
 CMD ["sleep", "7200"]''')
+
+docs_builder_temp = Template('''#!/bin/bash
+export PATH=$$HOME/.local/bin:$$PATH
+export PYTHONPATH=/tmp/yt
+cd /tmp/yt/doc
+python helper_scripts/run_recipes.py
+make html
+''')
 
 runner_temp = Template('''#!/bin/bash
 if [[ $yt_repo == yt_analysis/yt ]] ; then
@@ -56,6 +65,8 @@ runner = runner_temp.substitute(
 )
 
 build_dir = tempfile.mkdtemp()
+with open(os.path.join(build_dir, "build_docs.sh"), 'w') as fh:
+    fh.write(docs_builder_temp.substitute())
 with open(os.path.join(build_dir, "run.sh"), 'w') as fh:
     fh.write(runner)
 with open(os.path.join(build_dir, "Dockerfile"), 'w') as fh:

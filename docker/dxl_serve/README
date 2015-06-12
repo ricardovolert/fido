@@ -1,0 +1,3 @@
+# Adding new user
+
+htpasswd root/etc/nginx/docker-registry.htpasswd USERNAME

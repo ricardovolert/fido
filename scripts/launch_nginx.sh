@@ -12,4 +12,6 @@ docker run \
    --link registry:registry \
    --link prhandler:prhandler \
    --name $NAME \
+   -v /root/nginx/nginx:/etc/nginx \
+   -v /root/nginx/ssl:/etc/ssl \
    $IMAGE

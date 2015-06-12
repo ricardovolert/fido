@@ -39,17 +39,20 @@ sleep 3
 etcdctl -C 192.168.23.2:4001 set /proxy/proxies/irods-rest http://${COREOS_PRIVATE_IPV4}:$(docker port irodsrest 80 | cut -f2 -d:)
 
 NAME=owncloud1
-IMAGE=ndslabs/owncloud
+IMAGE=ndslabs/owncloud:8.0.2
 docker pull $IMAGE
 ( docker rm -f $NAME &> /dev/null ; true )
 docker run \
    -d \
    --env-file=/etc/hubenv \
-   --link db2:db2 \
+   --link db2:ocdbhost \
    --link irodsrest:irodsrest \
    -p 80 \
+   -v /mnt/data/volumes/owncloud/config:/var/www/owncloud/config \
+   -v /mnt/data/volumes/owncloud/data:/var/www/owncloud/data \
    --name $NAME $IMAGE
 
 sleep 3
 
-etcdctl -C 192.168.23.2:4001 set /proxy/proxies/owncloud http://${COREOS_PRIVATE_IPV4}:$(docker port owncloud1 80 | cut -f2 -d:)
+etcdctl -C 192.168.23.2:4001 set /proxy/proxies/owncloud \
+  http://${COREOS_PRIVATE_IPV4}:$(docker port owncloud1 80 | cut -f2 -d:)/owncloud

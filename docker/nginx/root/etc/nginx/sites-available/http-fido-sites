@@ -8,24 +8,17 @@ upstream modelconvert {
 
 server {
 	listen 80;
-	client_max_body_size 100M;
+
+	# disable any limits to avoid HTTP 413 for large image uploads
+	client_max_body_size 0;
 	server_name fido.ncsa.illinois.edu;
 
-	#ssl on;
-	#ssl_certificate /etc/ssl/certs/docker-registry;
-	#ssl_certificate_key /etc/ssl/private/docker-registry;
+	add_header X-Clacks-Overhead "GNU Terry Pratchett";
 
 	proxy_set_header Host       $http_host;   # required for Docker client sake
 	proxy_set_header X-Real-IP  $remote_addr; # pass on real client IP
 
-	# disable any limits to avoid HTTP 413 for large image uploads
-	# client_max_body_size 0; 
-
-	# required to avoid HTTP 411: see Issue #1486 
-	# (https://github.com/dotcloud/docker/issues/1486)
-	# chunked_transfer_encoding on;
-
- 	location /prhandler/ {
+	location /prhandler/ {
 		auth_basic off;
 		proxy_pass http://prhandler/;
 	}
@@ -38,6 +31,17 @@ server {
 		proxy_set_header X-Scheme $scheme;
 		proxy_set_header X-Script-Name /modelconvert;
 	}
+
+	location / {
+		root   /usr/share/nginx/html;
+		index  index.html index.htm;
+	}
+
+	proxy_http_version 1.1;
+	proxy_set_header Upgrade $http_upgrade;
+	proxy_set_header Connection "upgrade";
+	proxy_read_timeout 86400;
+
 }
 
 server {
@@ -45,6 +49,26 @@ server {
 	server_name use.yt;
 	client_max_body_size 16000M;
 
+	add_header X-Clacks-Overhead "GNU Terry Pratchett";
+
+	rewrite ^/sage/(.*) https://fido.ncsa.illinois.edu/sage/$1 permanent;
+
+	location /runlabs {
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header Host $http_host;
+		proxy_set_header X-NginX-Proxy true;
+		proxy_pass   http://192.168.23.2:49232/;
+		proxy_redirect off;
+		proxy_buffering off;
+
+		# WebSocket support
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_read_timeout 86400;
+	}
+	
 	location / {
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -52,10 +76,28 @@ server {
 		proxy_set_header X-NginX-Proxy true;
 		proxy_pass   http://192.168.23.2:8088$request_uri;
 		proxy_redirect off;
+		proxy_buffering off;
+
 		# WebSocket support
 		proxy_http_version 1.1;
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "upgrade";
 		proxy_read_timeout 86400;
+	}
+}
+
+server {
+	listen 80;
+	server_name dxl.ncsa.illinois.edu;
+	client_max_body_size 16000M;
+	add_header X-Clacks-Overhead "GNU Terry Pratchett";
+	location / {
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header Host $http_host;
+		proxy_set_header X-NginX-Proxy true;
+		proxy_pass   http://192.168.23.2:8777/;
+		proxy_redirect off;
+		proxy_buffering off;
 	}
 }

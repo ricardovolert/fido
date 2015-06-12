@@ -7,7 +7,7 @@ hg clone https://bitbucket.org/MatthewTurk/rockstar
 cd rockstar
 hg update -C tip
 rm -rf .hg
-make lib
+make lib RNG_FLAGS="-DRESET_RNG_STREAM"
 cp librockstar.so /usr/lib64
 
 # SZpack
@@ -24,7 +24,7 @@ cd /tmp
 git clone https://github.com/paulgb/runipy.git
 cd runipy
 python2 setup.py install
-python3 setup.py install
+#python3 setup.py install
 cd /tmp
 rm -rf runipy
 
@@ -46,7 +46,7 @@ wget https://pypi.python.org/packages/source/P/PyTAPS/PyTAPS-1.4.tar.gz
 tar zxvf PyTAPS-1.4.tar.gz
 cd PyTAPS-1.4/
 python2 setup.py install
-python3 setup.py install
+#python3 setup.py install
 cd /tmp && rm -rf PyTAPS*
 
 # Install PyNE
@@ -61,7 +61,7 @@ cd /tmp
 git clone https://github.com/jakevdp/JSAnimation.git
 cd JSAnimation 
 python2 setup.py install
-python3 setup.py install
+#python3 setup.py install
 cd /tmp && rm -rf JSAnimation
 
 # Sphinx
@@ -69,7 +69,7 @@ cd /tmp
 hg clone https://bitbucket.org/xarthisius/sphinx
 cd sphinx
 python2 setup.py install
-python3 setup.py install
+#python3 setup.py install
 cd /tmp && rm -rf sphinx
 
 # thingking

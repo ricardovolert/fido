@@ -33,9 +33,10 @@ def run_test(image=DEFAULT_IMAGE,
     dcli.start(contid,
                binds={"/mnt/data/volumes/yt_data/": {"bind": "/mnt/yt/"}})
 
+    for line in  dcli.logs(contid, stdout=True, stderr=True,
+                           stream=True, timestamps=False):
+        print line
     retcode = dcli.wait(contid)
-    print dcli.logs(contid, stdout=True, stderr=True,
-                    stream=False, timestamps=False)
 
     try:
         fo = StringIO(dcli.copy(contid, "/tmp/yt/nosetests.xml").read())

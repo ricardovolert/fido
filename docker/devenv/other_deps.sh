@@ -24,7 +24,7 @@ cd /tmp
 git clone https://github.com/paulgb/runipy.git
 cd runipy
 python2 setup.py install
-#python3 setup.py install
+# python3 setup.py install
 cd /tmp
 rm -rf runipy
 
@@ -61,7 +61,7 @@ cd /tmp
 git clone https://github.com/jakevdp/JSAnimation.git
 cd JSAnimation 
 python2 setup.py install
-#python3 setup.py install
+# python3 setup.py install
 cd /tmp && rm -rf JSAnimation
 
 # Sphinx
@@ -69,7 +69,7 @@ cd /tmp
 hg clone https://bitbucket.org/xarthisius/sphinx
 cd sphinx
 python2 setup.py install
-#python3 setup.py install
+# python3 setup.py install
 cd /tmp && rm -rf sphinx
 
 # thingking

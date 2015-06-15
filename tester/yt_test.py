@@ -7,7 +7,7 @@ BASE_URL = os.environ.get('BASE_URL', "tcp://141.142.234.27:2375")
 # BASE_URL = 'unix://var/run/docker.sock'
 
 IMAGE_NAME = os.environ.get('IMAGE_NAME', "ytanalysis/yt")
-IMAGE_TAG = os.environ.get('IMAGE_TAG', "latest")
+IMAGE_TAG = os.environ.get('IMAGE_TAG', "latest-py2.7")
 IMAGE_REPO = os.environ.get('IMAGE_REPO', "hub.yt")
 
 DEFAULT_IMAGE = "%s/%s:%s" % (IMAGE_REPO, IMAGE_NAME, IMAGE_TAG)

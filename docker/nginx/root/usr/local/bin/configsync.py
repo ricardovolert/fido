@@ -115,7 +115,7 @@ class Config:
 
 
 if __name__ == '__main__':
-    host_ip = os.environ.get('COREOS_PRIVATE_IPV4', None)
+    host_ip = os.environ.get('COREOS_PRIVATE_IPV4', "192.168.23.2")
     log.info("Connecting to etcd at %s" % host_ip)
 
     init = False

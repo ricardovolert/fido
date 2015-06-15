@@ -17,28 +17,30 @@ HOSTNAME = os.environ.get("HOSTNAME")
 
 RPROXY = Template('''
 	location /sage/$prefix {
-                proxy_set_header X-Real-IP $$remote_addr;
+		proxy_set_header X-Real-IP $$remote_addr;
 		proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
-                proxy_set_header Host $$http_host;
+		proxy_set_header Host $$http_host;
 		proxy_set_header X-NginX-Proxy true;
-                proxy_set_header X-Forwarded-Proto $$scheme;
+		proxy_set_header X-Forwarded-Proto $$scheme;
 
 		# WebSocket support
 		proxy_http_version 1.1;
 		proxy_set_header Upgrade $$http_upgrade;
 		proxy_set_header Connection "upgrade";
 		proxy_read_timeout 86400;
-                rewrite  /sage/$prefix(/.*)$$ $$1 break;
-                proxy_pass https://192.168.23.2:$port/;
-        }
+		rewrite  /sage/$prefix(/.*)$$ $$1 break;
+		proxy_pass https://192.168.23.2:$port/;
+	}
 
 ''')
+
 
 def filter_prefix(d, pref):
     return [k for k in d.keys() if k.startswith("%s/%s/" % (PREFIX, pref))]
 
 
 class log:
+
     @staticmethod
     def info(msg):
         sys.stderr.write("=> " + msg + "\n")
@@ -49,11 +51,13 @@ class log:
 
 
 class State:
+
     def __init__(self):
         self.proxies = set()
 
 
 class Config:
+
     def __init__(self, host_ip):
         self.state = State()
         self.client = etcd.Client(host=host_ip, port=4001)
@@ -77,9 +81,9 @@ class Config:
     def delete_proxy(self, proxy):
         # path = os.path.join(PREFIX, 'proxies', proxy)
         fname = "/etc/nginx/rproxy/%s.conf" % proxy
-	if os.path.isfile(fname):
-             os.remove(fname)
-             log.info("I deleted proxy /%s" % proxy)
+        if os.path.isfile(fname):
+            os.remove(fname)
+            log.info("I deleted proxy /%s" % proxy)
 
     def sync_proxies(self, proxies):
         proxies_to_add = proxies - self.state.proxies
@@ -99,12 +103,12 @@ class Config:
             except Exception as e:
                 log.error("Failed to remove proxy %s" % proxy, e)
         for oldproxy in glob.glob("/etc/nginx/rproxy/*.conf"):
-		proxy = os.path.splitext(os.path.basename(oldproxy))[0]
-		if not proxy in self.state.proxies:
-			self.delete_proxy(proxy) 
+            proxy = os.path.splitext(os.path.basename(oldproxy))[0]
+            if proxy not in self.state.proxies:
+                self.delete_proxy(proxy)
         log.info("Reloading nginx")
         os.kill(1, signal.SIGHUP)
-	
+
 
 if __name__ == '__main__':
     host_ip = os.environ.get('COREOS_PRIVATE_IPV4', None)

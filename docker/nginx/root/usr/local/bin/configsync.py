@@ -9,6 +9,7 @@ import json
 import time
 import urllib3.exceptions
 import signal
+import subprocess
 from string import Template
 
 
@@ -107,7 +108,10 @@ class Config:
             if proxy not in self.state.proxies:
                 self.delete_proxy(proxy)
         log.info("Reloading nginx")
-        os.kill(1, signal.SIGHUP)
+        nginx_pid = int(
+            subprocess.check_output(["pgrep", "-u", "root", "nginx"]).strip()
+        )
+        os.kill(nginx_pid, signal.SIGHUP)
 
 
 if __name__ == '__main__':

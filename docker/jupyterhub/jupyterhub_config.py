@@ -16,7 +16,7 @@ c.JupyterHub.ssl_key = pjoin(ssl_dir, 'fido.key')
 c.JupyterHub.ssl_cert = pjoin(ssl_dir, 'fido.crt')
 
 # spawn with Docker
-c.JupyterHub.spawner_class = 'dockerspawner.DockerSpawner'
+c.JupyterHub.spawner_class = 'ythubspawner.ytHubSpawner'
 
 # The docker instances need access to the Hub, so the default loopback port doesn't work:
 #from IPython.utils.localinterfaces import public_ips
@@ -60,3 +60,11 @@ c.JupyterHub.hub_prefix = '/jupyter/hub/'
 
 c.Spawner.container_ip = '192.168.23.2'
 c.Spawner.hub_ip_connect = pubip
+
+c.Spawner.otp_timeout = 30
+c.Spawner.otp_db_name = 'owncloud'
+c.Spawner.otp_db_hostname = 'ocdbhost'
+c.Spawner.otp_db_port = 5432
+c.Spawner.otp_db_username = 'ocadmin'
+c.Spawner.otp_db_password = os.environ.get('owncloudpassword', '')
+c.Spawner.container_image = 'ytproject/singleuser'

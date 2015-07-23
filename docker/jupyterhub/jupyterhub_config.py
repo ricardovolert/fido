@@ -35,10 +35,11 @@ c.JupyterHub.log_file = '/var/log/jupyterhub.log'
 
 # use GitHub OAuthenticator for local users
 
-c.JupyterHub.authenticator_class = 'oauthenticator.BitBucketOAuthenticator'
-c.BitBucketOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
-c.BitBucketOAuthenticator.bitbucket_client_id = os.environ['BITBUCKET_CLIENT_ID']
-c.BitBucketOAuthenticator.bitbucket_client_secret = os.environ['BITBUCKET_CLIENT_SECRET']
+c.JupyterHub.authenticator_class = 'oauthenticator.BitbucketOAuthenticator'
+c.BitbucketOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
+c.BitbucketOAuthenticator.client_id = os.environ['BITBUCKET_CLIENT_ID']
+c.BitbucketOAuthenticator.client_secret = os.environ['BITBUCKET_CLIENT_SECRET']
+c.BitbucketOAuthenticator.team_whitelist = {'yt_analysis'}
 # create system users that don't exist yet
 c.LocalAuthenticator.create_system_users = True
 
@@ -48,8 +49,8 @@ c.Authenticator.admin_users = {'xarthisius'}
 
 # The location of jupyterhub data files (e.g. /usr/local/share/jupyter/hub)
 c.JupyterHub.data_files_path = '/usr/local/share/jupyter/hub'
-c.JupyterHub.base_url = '/jupyter'
-c.JupyterHub.hub_prefix = '/jupyter/hub/'
+c.JupyterHub.base_url = '/%s' % os.environ.get("HUB_PREFIX", "jupyter")
+c.JupyterHub.hub_prefix = '/%s/hub/' % os.environ.get("HUB_PREFIX", "jupyter")
 
 # start single-user notebook servers in ~/assignments,
 # with ~/assignments/Welcome.ipynb as the default landing page
@@ -60,3 +61,6 @@ c.JupyterHub.hub_prefix = '/jupyter/hub/'
 
 c.Spawner.container_ip = '192.168.23.2'
 c.Spawner.hub_ip_connect = pubip
+c.Spawner.container_prefix = os.environ.get("HUB_PREFIX", "jupyter")
+c.Spawner.read_only_volumes = {'/mnt/data/volumes/yt_data': '/mnt/yt'}
+c.Spawner.remove_containers = True

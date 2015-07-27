@@ -31,6 +31,13 @@ RUN cd /tmp && \
    chown -R www-data:www-data /var/www/owncloud && \
    rm -rf ldap_inter*
 
+RUN cd /var/ww/owncloud/themes && \
+   wget https://bitbucket.org/yt_analysis/hub_theme/get/tip.zip && \
+   unzip tip.zip && rm -rf tip.zip && \
+   mv yt_analysis* hub_theme && \
+   sed -i -e "/theme/ s/''/'hub_theme'/" /var/www/owncloud/config/config.php && \
+   chown -R www-data:www-data /var/www/owncloud/themes
+
 ADD owncloud.conf /etc/apache2/conf-available/owncloud.conf
 ADD htaccess /var/www/owncloud/.htaccess
 RUN ln -s ../conf-available/owncloud.conf /etc/apache2/conf-enabled/owncloud.conf && \

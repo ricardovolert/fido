@@ -17,6 +17,7 @@ c.JupyterHub.ssl_cert = pjoin(ssl_dir, 'fido.crt')
 
 # spawn with Docker
 c.JupyterHub.spawner_class = 'ythubspawner.ytHubSpawner'
+c.JupyterHub.slow_spawn_timeout = 30
 
 # The docker instances need access to the Hub, so the default loopback port doesn't work:
 #from IPython.utils.localinterfaces import public_ips
@@ -35,17 +36,20 @@ c.JupyterHub.log_file = '/var/log/jupyterhub.log'
 
 # use GitHub OAuthenticator for local users
 
-c.JupyterHub.authenticator_class = 'oauthenticator.BitbucketOAuthenticator'
+#c.JupyterHub.authenticator_class = 'oauthenticator.LocalBitbucketOAuthenticator'
+#c.JupyterHub.authenticator_class = 'oauthenticator.LocalAuthenticator'
+c.JupyterHub.authenticator_class = 'jupyterhub.auth.PAMAuthenticator'
 c.BitbucketOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 c.BitbucketOAuthenticator.client_id = os.environ['BITBUCKET_CLIENT_ID']
 c.BitbucketOAuthenticator.client_secret = os.environ['BITBUCKET_CLIENT_SECRET']
 c.BitbucketOAuthenticator.team_whitelist = {'yt_analysis'}
 # create system users that don't exist yet
-c.LocalAuthenticator.create_system_users = True
+#c.LocalAuthenticator.create_system_users = True
 
 # specify users and admin
 #c.Authenticator.whitelist = {'xarthisius'}
-c.Authenticator.admin_users = {'xarthisius'}
+#c.Authenticator.admin_users = {'xarthisius', 'mturk'}
+##c.Authenticator.whitelist = {'mturk','test','xarthisius'}
 
 # The location of jupyterhub data files (e.g. /usr/local/share/jupyter/hub)
 c.JupyterHub.data_files_path = '/usr/local/share/jupyter/hub'
@@ -71,3 +75,4 @@ c.Spawner.otp_db_port = int(os.environ["OCDBHOST_PORT"].split(':')[-1])
 c.Spawner.otp_db_username = 'ocadmin'
 c.Spawner.otp_db_password = os.environ["OCDBHOST_ENV_owncloudpassword"] 
 c.Spawner.container_image = 'ytproject/singleuser'
+c.Spawner.extra_host_config = {"cap_add": ["SYS_ADMIN"], "devices": ["/dev/fuse:/dev/fuse"]}

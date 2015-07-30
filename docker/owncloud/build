@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build -t hub.yt/jupyter/owncloud:8.0.2 .
+

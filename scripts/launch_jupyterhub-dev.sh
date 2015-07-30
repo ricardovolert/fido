@@ -15,4 +15,5 @@ docker run \
    -v $DATA/ssl:/srv/jupyterhub/ssl \
    -v $DATA/state-dev:/var/run/jupyterhub \
    --link db2:ocdbhost \
+   --link owncloud1:owncloud_server \
    --name $NAME $IMAGE

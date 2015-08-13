@@ -7,12 +7,17 @@ ENV BITBUCKET_CLIENT_ID=github_id BITBUCKET_CLIENT_SECRET=github_secret \
 VOLUME ["/srv/jupyterhub/ssl", "/var/run/jupyterhub"]
 EXPOSE 443
 
-RUN apt-get install -y libpq-dev mercurial
+RUN apt-get install -y libpq-dev mercurial sssd libpam-sss libnss-sss supervisor
 
-RUN pip3 install docker-py==1.2.3
 RUN pip3 install git+git://github.com/jupyter/dockerspawner.git
 RUN pip3 install git+git://github.com/jupyter/oauthenticator.git
 RUN pip3 install hg+https://bitbucket.org/MatthewTurk/ythubspawner
 
 # set working directory to the jupyterhub directory
 WORKDIR /srv/jupyterhub
+
+ADD sssd.conf /etc/sssd/sssd.conf
+ADD supervisord.conf /etc/supervisor/supervisord.conf
+ADD jupyterhub.conf /etc/supervisor/conf.d/jupyterhub.conf
+
+CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

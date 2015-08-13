@@ -2,7 +2,7 @@
 source /etc/hubenv
 
 NAME=rabbitmq
-IMAGE=ndslabs/rabbitmq-etcd
+IMAGE=hub.yt/ythub/rabbitmq
 
 docker pull $IMAGE
 ( docker rm -f $NAME &> /dev/null ; true )
@@ -18,20 +18,18 @@ etcdctl -C 192.168.23.2:4001 set /rabbitmq/users/ytfido password
 etcdctl -C 192.168.23.2:4001 set /rabbitmq/vhosts/ythub 1
 etcdctl -C 192.168.23.2:4001 set /rabbitmq/permissions/ythub/ytfido ".*/.*/.*"
 
-NAME=celery
-IMAGE=ndslabs/ythub_worker
+NAME=worker
+IMAGE=hub.yt/ythub/worker
 
 docker pull $IMAGE
-docker pull ndslabs/hublaunch
-docker pull ndslabs/devenv
-docker pull ndslabs/rstudio
+#docker pull ndslabs/hublaunch
+#docker pull ndslabs/devenv
+#docker pull ndslabs/rstudio
 ( docker rm -f $NAME &> /dev/null ; true )
 docker run \
    -d \
    --env-file=/etc/hubenv \
-   -p 8888 \
+   -p 7888:8888 \
    --name $NAME $IMAGE
 
 sleep 3
-
-etcdctl -C 192.168.23.2:4001 set /proxy/proxies/ythub http://${COREOS_PRIVATE_IPV4}:$(docker port celery 8888 | cut -f2 -d:) 

@@ -11,6 +11,10 @@ WORKDIR /home/fido
 
 ADD server.py /home/fido/server.py
 ADD sshdir /home/fido/.ssh
-EXPOSE 5000
 
+RUN ssh-keyscan -H dickenson.dreamhost.com > /home/fido/.ssh/known_hosts
+RUN chown fido:fido -R /home/fido
+
+EXPOSE 5000
+USER fido
 CMD python /home/fido/server.py

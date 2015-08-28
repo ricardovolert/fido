@@ -79,3 +79,23 @@ tar xvf thingking-1.0.2.tar.gz
 cd thingking-1.0.2
 python2 setup.py install
 cd /tmp && rm -rf thingking*
+
+# embree
+cd /tmp
+git clone https://github.com/embree/embree.git embree
+cd embree
+git checkout v2.6.1
+mkdir build
+cd build
+cmake .. -DENABLE_ISPC_SUPPORT=OFF -DCMAKE_INSTALL_PREFIX=/usr
+make -j4 && make install 
+ln -s /usr/lib64/libembree.so.2.6.1 /usr/lib64/libembree.so.2
+ln -s /usr/lib64/libembree.so.2.6.1 /usr/lib64/libembree.so
+cd /tmp && rm -rf embree
+
+# pyembree
+cd /tmp
+git clone https://github.com/scopatz/pyembree.git
+cd pyembree
+python2 setup.py install
+python3 setup.py install

@@ -12,10 +12,14 @@ regprno = re.compile(r'PR\s?(\d+)', re.IGNORECASE)
 regissno = re.compile(r'#(\d+)')
 builddocs = re.compile(r'build docs for PR\s?(\d+)', re.IGNORECASE)
 testpr = re.compile(r'test PR\s?(\d+)', re.IGNORECASE)
+startsage = re.compile(r'start sage', re.IGNORECASE)
 
 TOKEN = "215d73b57c5149a88e23814501690540"
 JENKINS_URL = 'http://hub.yt:8080/'
 JENKINS = "%s/job/yt_docs/build?token=%s" % (JENKINS_URL, TOKEN)
+SAGE_URL="https://use.yt/ythub/v1/start_sage"
+CLIENT_URL="https://use.yt/sage/%s"
+DISPLAY_URL="https://use.yt/sage/%s/display.html?clientID=0"
 
 
 def build_job(data, prno, docs=False):
@@ -47,6 +51,14 @@ def build_job(data, prno, docs=False):
         r = requests.post(url, data=payload)
     outputs.append([data['channel'], "job submitted"])
 
+def start_sage2():
+    r = requests.get(SAGE_URL)
+    value = json.loads(r.data)
+    sage_url = value['url']
+    sage_hash = sage_url.split("/")[-2]
+    return "Interact: %s\nDisplay: %s\n" % (
+            CLIENT_URL % sage_hash,
+            DISPLAY_URL % sage_hash)
 
 def process_message(data):
     # if data['channel'].startswith("D") and 'text' in data:
@@ -87,3 +99,9 @@ def process_message(data):
                                     % match[0]])
                 except IOError:
                     pass
+        s = startsage.search(data['text'])
+        if s is not None:
+            match = s.groups()
+            if len(match) > 0:
+                msg = start_sage2()
+                outputs.append([data['channel'], msg])

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NAME=jupyterhub
-IMAGE=hub.yt/jupyter/jupyterhub
+IMAGE=hub.yt/jupyter/jupyterhub:anon
 DATA=/mnt/data/volumes/$NAME
 
 docker pull $IMAGE
@@ -10,7 +10,7 @@ docker pull $IMAGE
 docker run \
    -d \
    -h $NAME \
-   -p 8433:443 \
+   -p 9433:443 \
    --env-file=$DATA/env \
    -v $DATA/ssl:/srv/jupyterhub/ssl \
    -v $DATA/state:/var/run/jupyterhub \

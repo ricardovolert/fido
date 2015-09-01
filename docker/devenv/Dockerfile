@@ -27,7 +27,7 @@ RUN emerge-webrsync && \
     	mercurial dev-python/nose cython sympy h5py mpi4py astropy pyregion scipy gsl dev-python/hglib \
 	dev-python/sphinx-bootstrap-theme dev-python/Babel dev-python/pygments dev-texlive/texlive-latexextra \
         app-text/dvipng cmake swig net-libs/http-parser =dev-libs/libuv-1.4.2 dev-python/wcsaxes =pyx-0.12.1-r1 \
-	dev-python/numpydoc dev-java/icedtea-bin app-admin/supervisor && \
+	dev-python/numpydoc dev-java/icedtea-bin app-admin/supervisor freeglut imagemagick libXmu openexr && \
     rm -rf /usr/portage/*
 
 RUN emerge-webrsync && \

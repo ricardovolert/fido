@@ -74,12 +74,9 @@ def process_message(data):
 
     if 'username' in data:
         username = data['username']
-    else:
-        username = None
-
-    if username == 'yt-fido' or username.startswith("RatThing"):
-        logging.info("Won't talk to myself")
-        return
+        if username == 'yt-fido' or username.startswith("RatThing"):
+            logging.info("Won't talk to myself")
+            return
 
     s = builddocs.search(text)
     if s is not None:

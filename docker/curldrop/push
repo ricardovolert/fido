@@ -1,0 +1,2 @@
+#!/bin/bash
+docker push hub.yt/ythub/curldrop:latest

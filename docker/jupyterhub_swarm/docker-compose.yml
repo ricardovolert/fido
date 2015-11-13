@@ -1,0 +1,12 @@
+jupyterhub:
+    build: .
+    dockerfile: Dockerfile
+    ports:
+        - "443:443"
+        - "8000:8000"
+        - "8081:8081"
+    volumes:
+        - "/home/centos/swarm:/etc/swarm"
+    environment:
+        - "constraint:node==swarm-master"
+    env_file: jupyterhub.env

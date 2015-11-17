@@ -42,6 +42,9 @@ pubip = urlparse(os.environ.get("DOCKER_HOST")).netloc.rsplit(':')[0]
 c.Spawner.hub_ip_connect = pubip
 c.Spawner.container_prefix = "jupyter"
 c.Spawner.container_ip = '0.0.0.0'
+c.Spawner.read_only_volumes = {'/mnt/yt/yt_data': '/mnt/yt',
+                               '/mnt/yt/galaxy-demo': '/home/jovyan/work/data'}
+c.Spawner.container_image = 'hub.yt/jupyter/singleanonuser'
+c.Spawner.remove_containers = True
 c.Spawner.use_docker_client_env = True
 c.Spawner.tls_assert_hostname = False
-c.Spawner.remove_containers = False

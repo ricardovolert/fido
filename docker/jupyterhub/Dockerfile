@@ -12,11 +12,13 @@ RUN apt-get install -y libpq-dev mercurial sssd libpam-sss libnss-sss supervisor
 RUN pip3 install git+git://github.com/jupyter/dockerspawner.git
 RUN pip3 install git+git://github.com/jupyter/oauthenticator.git
 RUN pip3 install hg+https://bitbucket.org/MatthewTurk/ythubspawner
+RUN pip3 install dateutils
 
 # set working directory to the jupyterhub directory
 WORKDIR /srv/jupyterhub
 
 ADD sssd.conf /etc/sssd/sssd.conf
+RUN chmod 0600 /etc/sssd/sssd.conf && chown root:root /etc/sssd/sssd.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 ADD jupyterhub.conf /etc/supervisor/conf.d/jupyterhub.conf
 ADD cull_idle_servers.py /srv/jupyterhub/cull_idle_servers.py

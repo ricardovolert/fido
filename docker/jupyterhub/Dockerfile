@@ -19,5 +19,6 @@ WORKDIR /srv/jupyterhub
 ADD sssd.conf /etc/sssd/sssd.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 ADD jupyterhub.conf /etc/supervisor/conf.d/jupyterhub.conf
+ADD cull_idle_servers.py /srv/jupyterhub/cull_idle_servers.py
 
 CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

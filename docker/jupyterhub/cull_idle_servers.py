@@ -77,8 +77,9 @@ if __name__ == '__main__':
     if not options.cull_every:
         options.cull_every = options.timeout // 2
 
-    api_token = subprocess.check_output("jupyterhub token",
-                                        shell=True).strip()
+    api_token = subprocess.check_output(
+        "jupyterhub token kacperk -f /srv/jupyterhub/jupyterhub_config.py",
+        shell=True).strip()
 
     loop = IOLoop.current()
     cull = lambda: cull_idle(options.url, api_token, options.timeout)

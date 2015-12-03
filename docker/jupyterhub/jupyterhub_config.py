@@ -48,7 +48,7 @@ c.BitbucketOAuthenticator.team_whitelist = {'yt_analysis'}
 
 # specify users and admin
 #c.Authenticator.whitelist = {'xarthisius'}
-#c.Authenticator.admin_users = {'xarthisius', 'mturk'}
+c.Authenticator.admin_users = {'kacperk', 'mturk'}
 ##c.Authenticator.whitelist = {'mturk','test','xarthisius'}
 
 # The location of jupyterhub data files (e.g. /usr/local/share/jupyter/hub)

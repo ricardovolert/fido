@@ -6,7 +6,7 @@ jupyterhub:
         - "8000:8000"
         - "8081:8081"
     volumes:
-        - "/home/centos/swarm:/etc/swarm"
+        - "/home/ubuntu/swarm:/etc/swarm"
     environment:
-        - "constraint:node==swarm-master"
+        - "constraint:node==uswarm-master"
     env_file: jupyterhub.env

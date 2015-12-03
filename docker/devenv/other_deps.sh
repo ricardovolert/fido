@@ -14,6 +14,8 @@ cp librockstar.so /usr/lib64
 cd /tmp/SZpack.v1.1.1/
 make
 cd python
+rm numpy.i
+wget https://raw.githubusercontent.com/baeuml/numpy/18bcac097c289f0ee937563652f771fe89c174f2/doc/swig/numpy.i
 python2 setup.py install && cp SZpack.py /usr/lib64/python2.7/site-packages/
 python3 setup.py install && cp SZpack.py /usr/lib64/python3.4/site-packages/
 cd /tmp

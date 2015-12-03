@@ -23,14 +23,14 @@ RUN wget https://bitbucket.org/data-exp-lab/galaxy-demo/raw/tip/galaxy_visualiza
 
 RUN chmod -w /home/jovyan/work -R
 
+ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/jupyterhub/singleuser.py /usr/local/bin/jupyterhub-singleuser
+RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
+
 EXPOSE 8888
 USER jovyan
 
 RUN conda install -qy h5py numexpr yt
 RUN pip install galanyl
-
-ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/jupyterhub/singleuser.py /usr/local/bin/jupyterhub-singleuser
-RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
 
 ADD singleuser.sh /srv/singleuser/singleuser.sh
 CMD ["sh", "/srv/singleuser/singleuser.sh"]

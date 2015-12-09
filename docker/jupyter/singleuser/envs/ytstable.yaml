@@ -1,3 +1,4 @@
 dependencies:
-   - ipython
-   - yt
+- ipython
+- ipykernel
+- yt

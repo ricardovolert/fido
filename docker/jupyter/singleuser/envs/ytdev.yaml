@@ -9,5 +9,6 @@ dependencies:
 - sympy
 - scipy
 - matplotlib
+- ipykernel
 - pip:
   - https://bitbucket.org/yt_analysis/yt/get/yt.tar.bz2

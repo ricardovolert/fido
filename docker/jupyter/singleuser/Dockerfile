@@ -44,14 +44,13 @@ RUN mkdir -p /home/jovyan/.config/matplotlib/ && \
 
 ADD ./yt_config /home/jovyan/.yt/config
 
-COPY ./envs /tmp/
-COPY kernels.sh /tmp/kernels.sh
-RUN chmod +x /tmp/kernels.sh && /tmp/kernels.sh
-
 EXPOSE 8888
 USER jovyan
 
+COPY ./envs /tmp/
+COPY kernels.sh /tmp/kernels.sh
 RUN conda install -qy ipython conda-build
+RUN chmod +x /tmp/kernels.sh && /tmp/kernels.sh
 ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/jupyterhub/singleuser.py /usr/local/bin/jupyterhub-singleuser
 RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
 

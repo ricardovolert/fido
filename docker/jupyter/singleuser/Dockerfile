@@ -44,16 +44,14 @@ RUN mkdir -p /home/jovyan/.config/matplotlib/ && \
 
 ADD ./yt_config /home/jovyan/.yt/config
 
+COPY ./envs /tmp/
+COPY kernels.sh /tmp/kernels.sh
+RUN chmod +x /tmp/kernels.sh && /tmp/kernels.sh
+
 EXPOSE 8888
 USER jovyan
 
-RUN conda install -qy h5py numexpr python setuptools numpy sphinx cython \
-  nose conda-build sympy
-RUN cd /tmp && curl -JO https://bitbucket.org/yt_analysis/yt/get/yt.tar.bz2 && \
-  tar xvf yt*.tar.bz2 && cd yt_analysis* && \
-  python setup.py install && cd /tmp && rm -rf yt*
-RUN pip install galanyl
-
+RUN conda install -qy ipython conda-build
 ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/jupyterhub/singleuser.py /usr/local/bin/jupyterhub-singleuser
 RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
 

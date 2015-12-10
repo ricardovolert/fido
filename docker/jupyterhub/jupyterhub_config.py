@@ -66,7 +66,8 @@ c.JupyterHub.hub_prefix = '/%s/hub/' % os.environ.get("HUB_PREFIX", "jupyter")
 c.Spawner.container_ip = '192.168.23.2'
 c.Spawner.hub_ip_connect = pubip
 c.Spawner.container_prefix = os.environ.get("HUB_PREFIX", "jupyter")
-c.Spawner.read_only_volumes = {'/mnt/data/volumes/yt_data': '/mnt/yt'}
+c.Spawner.read_only_volumes = {'/mnt/data/volumes/yt_data': '/mnt/yt',
+                               '/mnt/gv0': '/mnt/gv0'}
 c.Spawner.remove_containers = True
 c.Spawner.otp_timeout = 30
 c.Spawner.otp_db_name = 'owncloud'

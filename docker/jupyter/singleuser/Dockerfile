@@ -7,7 +7,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/
 RUN chmod +x /usr/bin/tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -qyy curl julia libxml2-dev libz-dev libneon27-gnutls-dev && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -qyy curl sudo julia libxml2-dev libz-dev libneon27-gnutls-dev && \
   groupadd davfs2 && \
   cd /tmp && \
   curl -OJ http://mirror.lihnidos.org/GNU/savannah/davfs2/davfs2-1.5.2.tar.gz && \
@@ -56,4 +56,5 @@ RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
 RUN julia -e 'Pkg.add("IJulia"); Pkg.add("YT");'
 
 ADD singleuser.sh /srv/singleuser/singleuser.sh
+USER root
 CMD ["sh", "/srv/singleuser/singleuser.sh"]

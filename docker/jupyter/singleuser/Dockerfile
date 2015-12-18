@@ -44,6 +44,18 @@ RUN mkdir -p /home/jovyan/.config/matplotlib/ && \
 
 ADD ./yt_config /home/jovyan/.yt/config
 
+RUN cd /tmp && \
+  apt-get install -qy cmake libxi-dev libtbb-dev libice-dev libopenexr-dev imagemagick freeglut3-dev libxmu-dev && \
+  git clone https://github.com/embree/embree.git embree && \
+  cd embree && \
+  git checkout v2.6.1 && \
+  mkdir build && \
+  cd build && \
+  cmake .. -DENABLE_ISPC_SUPPORT=OFF -DCMAKE_INSTALL_PREFIX=/usr && \
+  make -j4 && make install && \
+  ln -s /usr/lib/libembree.so.2.6.1 /usr/lib/libembree.so && \
+  cd /tmp && rm -rf embree
+
 EXPOSE 8888
 USER jovyan
 

@@ -15,3 +15,4 @@ dependencies:
   - slacker
   - https://bitbucket.org/yt_analysis/yt/get/yt.tar.bz2
   - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
+  - https://github.com/scopatz/pyembree.git

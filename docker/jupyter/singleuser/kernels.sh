@@ -15,4 +15,5 @@ for pyver in 2 3; do
     done
 done
 
-echo "c.KernelSpecManager.whitelist = {'julia-0.3', 'py2-dev', 'py2-stable', 'py3-dev', 'py3-stable'}" >> $HOME/.jupyter/jupyter_notebook_config.py
+sed -e "\$ac.KernelSpecManager.whitelist = {'julia-0.3', 'py2-dev', 'py2-stable', 'py3-dev', 'py3-stable'}" \
+    -i $HOME/.jupyter/jupyter_notebook_config.py

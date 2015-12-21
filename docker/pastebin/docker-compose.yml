@@ -1,0 +1,11 @@
+pastebin:
+  build: .
+  command: python manage.py runserver -h 0.0.0.0 -p 5000
+  ports:
+    - "8192:5000"
+  links:
+    - "pastebin-db:db"
+pastebin-db:
+  image: mysql
+  environment:
+    MYSQL_DATABASE: enzotools_pastebin

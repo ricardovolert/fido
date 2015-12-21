@@ -33,7 +33,7 @@ from tornado.options import define, options, parse_command_line
 def cull_idle(url, api_token, timeout):
     """cull idle single-user servers"""
     auth_header = {
-        'Authorization': 'token %s' % api_token
+        'Authorization': 'token {}'.format(api_token)
     }
     req = HTTPRequest(url=url + '/api/users',
                       headers=auth_header,
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     api_token = subprocess.check_output(
         "jupyterhub token kacperk -f /srv/jupyterhub/jupyterhub_config.py",
-        shell=True).strip()
+        shell=True).strip().decode('utf-8')
 
     loop = IOLoop.current()
     cull = lambda: cull_idle(options.url, api_token, options.timeout)

@@ -1,0 +1,21 @@
+dependencies:
+- h5py
+- numexpr
+- setuptools
+- numpy
+- sphinx
+- cython
+- nose
+- sympy
+- scipy
+- matplotlib
+- ipykernel
+- requests
+- scipy
+- numexpr
+- pip:
+  - slacker
+  - https://bitbucket.org/yt_analysis/yt/get/yt.tar.bz2
+  - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
+  - https://github.com/scopatz/pyembree.git
+  - galanyl

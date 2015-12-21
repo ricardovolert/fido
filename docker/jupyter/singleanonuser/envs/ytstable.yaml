@@ -1,0 +1,12 @@
+dependencies:
+- ipython
+- ipykernel
+- yt
+- requests
+- cython
+- scipy
+- numexpr
+- pip:
+   - slacker
+   - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
+   - galanyl

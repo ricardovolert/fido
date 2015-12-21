@@ -14,3 +14,5 @@ for pyver in 2 3; do
           -e "/conda/ s/python2/py${pyver}-${branch}/"
     done
 done
+
+echo "c.KernelSpecManager.whitelist = {'julia-0.3', 'py2-dev', 'py2-stable', 'py3-dev', 'py3-stable'}" >> $HOME/.jupyter/jupyter_notebook_config.py

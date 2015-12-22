@@ -1,0 +1,3 @@
+FROM girder/girder:1.3.3
+
+COPY ./girder.local.cfg /girder/girder/conf/girder.local.cfg

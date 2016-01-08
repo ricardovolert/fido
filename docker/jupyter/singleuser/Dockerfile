@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook:4.1
+FROM jupyter/scipy-notebook:latest
 
 MAINTAINER Data Exploration Lab <dxl@ncsa.illinois.edu>
 

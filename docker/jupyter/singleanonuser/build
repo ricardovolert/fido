@@ -1,1 +1,1 @@
-docker build -t hub.yt/jupyter/singleanonuser .
+docker build -t xarthisius/singleanonuser .

@@ -1,0 +1,18 @@
+mongodb:
+    image: mongo:3.0
+    ports:
+        - "27017"
+    volumes:
+        - "/mnt/data/volumes/girder_db:/data/db"
+
+girder:
+    build: .
+    dockerfile: Dockerfile.build
+    ports:
+        - "18081:8080"
+    links:
+        - "mongodb:mongodb"
+    volumes:
+        - "/mnt/data/volumes/girder_fs:/mnt/girderfs"
+        - "/mnt/data/volumes/yt_data:/mnt/yt"
+    command: -d mongodb://mongodb:27017/girder

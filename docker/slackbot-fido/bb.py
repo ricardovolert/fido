@@ -16,7 +16,7 @@ testpr = re.compile(r'test PR\s?(\d+)', re.IGNORECASE)
 startsage = re.compile(r'start sage', re.IGNORECASE)
 
 TOKEN = "215d73b57c5149a88e23814501690540"
-JENKINS_URL = 'http://hub.yt:8080/'
+JENKINS_URL = 'https://tests.yt-project.org/'
 JENKINS = "%s/job/yt_docs/build?token=%s" % (JENKINS_URL, TOKEN)
 SAGE_URL = "http://use.yt/ythub/v1/start_sage"
 CLIENT_URL = "https://hub.yt/sage/%s"

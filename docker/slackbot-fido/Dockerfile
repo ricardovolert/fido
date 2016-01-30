@@ -15,9 +15,7 @@ RUN cd /tmp && \
 
 RUN cd /tmp && \
    curl -O https://codeload.github.com/Xarthisius/python-rtmbot/zip/master && \
-   unzip master && \
-   cd python-rtmbot-master && \
-   pip install -r requirements.txt
+   unzip master
 
 ADD ./bb.py /tmp/python-rtmbot-master/plugins/bb.py
 ADD ./hgbb.py /tmp/python-rtmbot-master/plugins/hgbb.py

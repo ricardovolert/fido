@@ -63,7 +63,7 @@ COPY ./envs /tmp/
 COPY kernels.sh /tmp/kernels.sh
 RUN conda install -qy ipython conda-build yt
 RUN chmod +x /tmp/kernels.sh && /tmp/kernels.sh
-ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/jupyterhub/singleuser.py /usr/local/bin/jupyterhub-singleuser
+ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/scripts/jupyterhub-singleuser /usr/local/bin/jupyterhub-singleuser
 RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
 RUN julia -e 'Pkg.add("IJulia"); Pkg.add("YT");'
 

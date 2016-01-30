@@ -30,7 +30,7 @@ ADD ./quickstart.tar /home/jovyan/work/
 RUN wget https://bitbucket.org/data-exp-lab/galaxy-demo/raw/tip/galaxy_visualization.ipynb && \ 
   chmod 644 galaxy_visualization.ipynb
 
-ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/jupyterhub/singleuser.py /usr/local/bin/jupyterhub-singleuser
+ADD https://raw.githubusercontent.com/jupyter/jupyterhub/master/scripts/jupyterhub-singleuser /usr/local/bin/jupyterhub-singleuser
 RUN chmod 755 /usr/local/bin/jupyterhub-singleuser
 
 COPY ./envs /tmp/

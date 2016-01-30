@@ -1,9 +1,17 @@
 FROM debian:sid
 
 RUN apt-get -qy update && \
-   apt-get -qyy install unzip curl python-pip mercurial python-hglib && \
+   apt-get -qyy install unzip curl python-requests python-websocket \
+     python-daemon python-yaml python-setuptools python-future mercurial python-hglib && \
    apt-get clean && \
    rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp && \
+   curl -LJO https://github.com/slackhq/python-slackclient/archive/master.zip && \
+   unzip python-slackclient-master.zip && \
+   cd python-slackclient-master && \
+   python setup.py install && \
+   cd /tmp && rm -rf /tmp/*
 
 RUN cd /tmp && \
    curl -O https://codeload.github.com/Xarthisius/python-rtmbot/zip/master && \

@@ -1,10 +1,10 @@
+import os
 import re
 import urllib2
 import json
 import requests
 import logging
 from hgbb import get_pr_info, _bb_apicall
-
 
 crontable = []
 outputs = []
@@ -15,12 +15,11 @@ builddocs = re.compile(r'build docs for PR\s?(\d+)', re.IGNORECASE)
 testpr = re.compile(r'test PR\s?(\d+)', re.IGNORECASE)
 startsage = re.compile(r'start sage', re.IGNORECASE)
 
-TOKEN = "215d73b57c5149a88e23814501690540"
-JENKINS_URL = 'http://hub.yt:8080/'
-JENKINS = "%s/job/yt_docs/build?token=%s" % (JENKINS_URL, TOKEN)
-SAGE_URL = "http://use.yt/ythub/v1/start_sage"
-CLIENT_URL = "https://hub.yt/sage/%s"
-DISPLAY_URL = "https://hub.yt/sage/%s/display.html?clientID=0"
+JENKINS_TOKEN = os.environ.get("JENKINS_TOKEN")
+JENKINS_URL = os.environ.get("JENKINS_URL")
+SAGE_START_URL = os.environ.get("SAGE_START_URL")
+SAGE_CLIENT_URL = os.environ.get("SAGE_CLIENT_URL")
+SAGE_DISPLAY_URL = SAGE_CLIENT_URL + "/display.html?clientID=0"
 
 
 def build_job(data, prno, docs=False):
@@ -33,11 +32,14 @@ def build_job(data, prno, docs=False):
     author = pr['author']['display_name']
     if docs:
         msg = "will build docs for PR %i" % prno
-        urls = ["%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_docs", TOKEN)]
+        urls = ["%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_docs",
+                                              JENKINS_TOKEN)]
     else:
         msg = "will test PR %i by %s" % (prno, author)
-        urls = ["%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite_dev", TOKEN),
-                "%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite_py34", TOKEN)]
+        urls = ["%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite_dev",
+                                              JENKINS_TOKEN),
+                "%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite_py34",
+                                              JENKINS_TOKEN)]
     params = [
         {'name': 'IRKMSG', 'value': msg},
         {'name': 'YT_REPO', 'value': pr['source']['repository']['full_name']},
@@ -49,20 +51,20 @@ def build_job(data, prno, docs=False):
         'Submit': 'Build'
     }
     for url in urls:
-        r = requests.post(url, data=payload)
+        requests.post(url, data=payload)
     outputs.append([data['channel'], "job submitted"])
 
 
 def start_sage2():
-    r = requests.get(SAGE_URL)
+    r = requests.get(SAGE_START_URL)
     if r.status_code != requests.codes.ok:
         return "Something went wrong :( Poke admin"
     value = json.loads(r.data)
     sage_url = value['url']
     sage_hash = sage_url.split("/")[-2]
     return "Interact: %s\nDisplay: %s\n" % (
-        CLIENT_URL % sage_hash,
-        DISPLAY_URL % sage_hash)
+        SAGE_CLIENT_URL % sage_hash,
+        SAGE_DISPLAY_URL % sage_hash)
 
 
 def process_message(data):
@@ -106,9 +108,10 @@ def process_message(data):
         match = s.groups()
         if len(match) > 0:
             try:
-                retval = _bb_apicall(None, 'repositories/yt_analysis/yt/issues/%s'
+                retval = _bb_apicall(None,
+                                     'repositories/yt_analysis/yt/issues/%s'
                                      % match[0], None, False, api=1)
-                issue = json.loads(retval)
+                json.loads(retval)
                 outputs.append([data['channel'],
                                 "https://bitbucket.org/yt_analysis/yt/issue/%s/"
                                 % match[0]])

@@ -1,6 +1,8 @@
-FROM jupyter/scipy-notebook:4.0
+FROM jupyter/scipy-notebook:latest
 
 MAINTAINER Data Exploration Lab <dxl@ncsa.illinois.edu>
+
+USER root
 
 ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini

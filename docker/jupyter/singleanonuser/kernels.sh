@@ -16,4 +16,5 @@ for pyver in 2 3; do
 done
 
 sed -e "\$ac.KernelSpecManager.whitelist = {'py2-dev', 'py2-stable', 'py3-dev', 'py3-stable'}" \
+    -e "\$ac.MappingKernelManager.default_kernel_name = 'py2-dev'" \
     -i $HOME/.jupyter/jupyter_notebook_config.py

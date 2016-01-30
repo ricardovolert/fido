@@ -40,7 +40,6 @@ RUN chmod +x /tmp/kernels.sh
 EXPOSE 8888
 USER jovyan
 
-RUN conda install -qy ipython conda-build yt 
 RUN /tmp/kernels.sh
 
 ADD singleuser.sh /srv/singleuser/singleuser.sh

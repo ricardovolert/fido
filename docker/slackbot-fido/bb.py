@@ -6,7 +6,6 @@ import requests
 import logging
 from hgbb import get_pr_info, _bb_apicall
 
-crontable = []
 outputs = []
 
 # regex needs to create group
@@ -137,12 +136,14 @@ FIDO_COMMANDS = [
 
 def process_message(data):
     # if data['channel'].startswith("D") and 'text' in data:
-    if "text" not in data or "username" not in data:
+    if "text" not in data:
         return
-    username = data['username']
-    if username == 'yt-fido' or username.startswith("RatThing"):
-        logging.info("Won't talk to myself")
-        return
+    
+    if "username" in data:
+        username = data['username']
+        if username == 'yt-fido' or username.startswith("RatThing"):
+            logging.info("Won't talk to myself")
+            return
 
     for command in FIDO_COMMANDS:
         command(data)

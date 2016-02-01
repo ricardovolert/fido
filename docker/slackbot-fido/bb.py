@@ -158,7 +158,7 @@ class FidoUserRepo(FidoCommand):
 
     def run(self, match, data):
         logging.info(json.dumps(data))
-        dbquery = Query()
+        dbquery = tinydb.Query()
         repo = DB.search(dbquery.user == data["user"])
         DB.close()
         if repo:

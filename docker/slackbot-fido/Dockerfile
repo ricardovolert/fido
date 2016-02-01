@@ -14,6 +14,13 @@ RUN cd /tmp && \
    cd /tmp && rm -rf /tmp/*
 
 RUN cd /tmp && \
+  curl -LJO https://github.com/msiemens/tinydb/archive/master.zip && \
+  unzip tinydb-master.zip && \
+  cd tinydb-master && \
+  python setup.py install && \
+  cd /tmp && rm -rf /tmp/*
+
+RUN cd /tmp && \
    curl -O https://codeload.github.com/Xarthisius/python-rtmbot/zip/master && \
    unzip master
 

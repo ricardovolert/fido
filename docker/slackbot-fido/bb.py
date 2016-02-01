@@ -4,6 +4,9 @@ import urllib2
 import json
 import requests
 import logging
+import hglib
+import tempfile
+import tinydb
 from hgbb import get_pr_info, _bb_apicall
 
 outputs = []
@@ -20,6 +23,23 @@ JENKINS_URL = os.environ.get("JENKINS_URL")
 SAGE_START_URL = os.environ.get("SAGE_START_URL")
 SAGE_CLIENT_URL = os.environ.get("SAGE_CLIENT_URL", "http://somewhere.org")
 SAGE_DISPLAY_URL = SAGE_CLIENT_URL + "/display.html?clientID=0"
+REPOS_DIR = "/tmp/bb_repos"
+
+# DB
+
+
+def _get_local_repo(path):
+    repo_path = os.path.join(REPOS_DIR, path)
+    if not os.path.isdir(repo_path):
+        os.makedirs(repo_path)
+        repo = hglib.clone("https://bitbucket.org/%s" % path, repo_path)
+    repo = hglib.open(repo_path)
+    repo.pull()
+    repo.update(rev="yt", clean=True)
+    repo.close()
+    temp_repo = tempfile.mkdtemp()
+    hglib.clone(repo_path, temp_repo)
+    return temp_repo, hglib.open(temp_repo)
 
 
 def _build_job(data, prno, docs=False):
@@ -128,9 +148,24 @@ class FidoStartSage(FidoCommand):
             SAGE_DISPLAY_URL % sage_hash)
         outputs.append([data['channel'], msg])
 
+
+class FidoUserRepo(FidoCommand):
+    regex = re.compile(r'^What is (my repo).*$', re.IGNORECASE).match
+
+    def run(self, match, data):
+        logging.info(json.dumps(data))
+        db = tinydb.TinyDB("/mnt/db/slack.json")
+        query = db.query()
+        repo = db.search(query.user == "foo")
+        if repo:
+            outputs.append([data['channel'], repo])
+        else:
+            outputs.append([data['channel'], "I have no clue"])
+        db.close()
+
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),
-    FidoBuildDocs()
+    FidoBuildDocs(), FidoUserRepo()
 ]
 
 
@@ -138,7 +173,7 @@ def process_message(data):
     # if data['channel'].startswith("D") and 'text' in data:
     if "text" not in data:
         return
-    
+
     if "username" in data:
         username = data['username']
         if username == 'yt-fido' or username.startswith("RatThing"):

@@ -156,7 +156,7 @@ class FidoUserRepoQuery(FidoCommand):
 
 
 class FidoUserRepoKeep(FidoCommand):
-    regex = re.compile(r'^(.*) is my repo$').match
+    regex = re.compile(r'^(.*/.*) is my repo$').match
 
     def run(self, match, data):
         dbquery = tinydb.Query()

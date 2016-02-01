@@ -7,13 +7,9 @@ import logging
 import hglib
 import tempfile
 import tinydb
-from tinydb.storages import JSONStorage
-from tinydb.middlewares import CachingMiddleware
 from hgbb import get_pr_info, _bb_apicall
 
 outputs = []
-#DB = tinydb.TinyDB("/mnt/db/slack.json",
-#                   storage=CachingMiddleware(JSONStorage))
 DB = tinydb.TinyDB("/mnt/db/slack.json")
 JENKINS_TOKEN = os.environ.get("JENKINS_TOKEN")
 JENKINS_URL = os.environ.get("JENKINS_URL")
@@ -161,11 +157,9 @@ class FidoUserRepoKeep(FidoCommand):
 
     def run(self, match, data):
         dbquery = tinydb.Query()
-        repo = DB.search(dbquery.user == data["user"])
-        if repo:
-            DB.update({data["user"]: match[0]})
-        else:
-            DB.insert({data["user"]: match[0]})
+        if not DB.update({'repo': match[0]},
+                         cond=dbquery.user == data["user"]):
+            DB.insert({'user': data["user"], 'repo': match[0]})
         outputs.append([data['channel'], "Got it!"])
 
 

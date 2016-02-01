@@ -147,18 +147,40 @@ class FidoUserRepoQuery(FidoCommand):
     regex = re.compile(r'^What is (my repo).*$', re.IGNORECASE).match
 
     def run(self, match, data):
-        logging.info(json.dumps(data))
         dbquery = tinydb.Query()
         repo = DB.search(dbquery.user == data["user"])
-        DB.close()
         if repo:
             outputs.append([data['channel'], repo])
         else:
             outputs.append([data['channel'], "I have no clue"])
 
+
+class FidoUserRepoKeep(FidoCommand):
+    regex = re.compile(r'^(.*) is my repo$').match
+
+    def run(self, match, data):
+        dbquery = tinydb.Query()
+        repo = DB.search(dbquery.user == data["user"])
+        if repo:
+            DB.update({data["user"]: match[0]})
+        else:
+            DB.insert({data["user"]: match[0]})
+        outputs.append([data['channel'], "Got it!"])
+
+
+class FidoUserRepoForget(FidoCommand):
+    regex = re.compile(r'^(forget) my repo$').match
+
+    def run(self, match, data):
+        dbquery = tinydb.Query()
+        if DB.remove(dbquery.user == data["user"]):
+            outputs.append([data['channel'], "Roger!"])
+
+
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),
-    FidoBuildDocs(), FidoUserRepoQuery()
+    FidoBuildDocs(), FidoUserRepoQuery(), FidoUserRepoKeep(),
+    FidoUserRepoForget()
 ]
 
 

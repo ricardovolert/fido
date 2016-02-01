@@ -14,22 +14,12 @@ from hgbb import get_pr_info, _bb_apicall
 outputs = []
 DB = tinydb.TinyDB("/mnt/db/slack.json",
                    storage=CachingMiddleware(JSONStorage))
-
-# regex needs to create group
-regprno = re.compile(r'PR\s?(\d+)', re.IGNORECASE)
-regissno = re.compile(r'#(\d+)')
-builddocs = re.compile(r'build docs for PR\s?(\d+)', re.IGNORECASE)
-testpr = re.compile(r'test PR\s?(\d+)', re.IGNORECASE)
-startsage = re.compile(r'(start sage)', re.IGNORECASE)
-
 JENKINS_TOKEN = os.environ.get("JENKINS_TOKEN")
 JENKINS_URL = os.environ.get("JENKINS_URL")
 SAGE_START_URL = os.environ.get("SAGE_START_URL")
 SAGE_CLIENT_URL = os.environ.get("SAGE_CLIENT_URL", "http://somewhere.org")
 SAGE_DISPLAY_URL = SAGE_CLIENT_URL + "/display.html?clientID=0"
 REPOS_DIR = "/tmp/bb_repos"
-
-# DB
 
 
 def _get_local_repo(path):
@@ -93,21 +83,21 @@ class FidoCommand:
 
 
 class FidoBuildDocs(FidoCommand):
-    regex = builddocs.search
+    regex = re.compile(r'build docs for PR\s?(\d+)', re.IGNORECASE).search
 
     def run(self, match, data):
         _build_job(data, int(match[0]), docs=True)
 
 
 class FidoTestPR(FidoCommand):
-    regex = testpr.search
+    regex = re.compile(r'test PR\s?(\d+)', re.IGNORECASE).search
 
     def run(self, match, data):
         _build_job(data, int(match[0]), docs=False)
 
 
 class FidoGetPRInfo(FidoCommand):
-    regex = regprno.search
+    regex = re.compile(r'PR\s?(\d+)', re.IGNORECASE).search
 
     def run(self, match, data):
         try:
@@ -119,7 +109,7 @@ class FidoGetPRInfo(FidoCommand):
 
 
 class FidoGetIssueInfo(FidoCommand):
-    regex = regissno.search
+    regex = re.compile(r'#(\d+)').search
 
     def run(self, match, data):
         try:
@@ -135,7 +125,7 @@ class FidoGetIssueInfo(FidoCommand):
 
 
 class FidoStartSage(FidoCommand):
-    regex = startsage.search
+    regex = re.compile(r'(start sage)', re.IGNORECASE).search
 
     def run(self, match, data):
         r = requests.get(SAGE_START_URL)
@@ -153,7 +143,7 @@ class FidoStartSage(FidoCommand):
         outputs.append([data['channel'], msg])
 
 
-class FidoUserRepo(FidoCommand):
+class FidoUserRepoQuery(FidoCommand):
     regex = re.compile(r'^What is (my repo).*$', re.IGNORECASE).match
 
     def run(self, match, data):
@@ -168,7 +158,7 @@ class FidoUserRepo(FidoCommand):
 
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),
-    FidoBuildDocs(), FidoUserRepo()
+    FidoBuildDocs(), FidoUserRepoQuery()
 ]
 
 

@@ -147,7 +147,7 @@ class FidoUserRepoQuery(FidoCommand):
         dbquery = tinydb.Query()
         repo = DB.search(dbquery.user == data["user"])
         if repo:
-            outputs.append([data['channel'], repo])
+            outputs.append([data['channel'], repo[0]])
         else:
             outputs.append([data['channel'], "I have no clue"])
 

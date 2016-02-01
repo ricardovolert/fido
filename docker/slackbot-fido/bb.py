@@ -7,9 +7,13 @@ import logging
 import hglib
 import tempfile
 import tinydb
+from tinydb.storages import JSONStorage
+from tinydb.middlewares import CachingMiddleware
 from hgbb import get_pr_info, _bb_apicall
 
 outputs = []
+DB = tinydb.TinyDB("/mnt/db/slack.json",
+                   storage=CachingMiddleware(JSONStorage))
 
 # regex needs to create group
 regprno = re.compile(r'PR\s?(\d+)', re.IGNORECASE)
@@ -154,14 +158,13 @@ class FidoUserRepo(FidoCommand):
 
     def run(self, match, data):
         logging.info(json.dumps(data))
-        db = tinydb.TinyDB("/mnt/db/slack.json")
-        query = db.query()
-        repo = db.search(query.user == "foo")
+        dbquery = Query()
+        repo = DB.search(dbquery.user == data["user"])
+        DB.close()
         if repo:
             outputs.append([data['channel'], repo])
         else:
             outputs.append([data['channel'], "I have no clue"])
-        db.close()
 
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),

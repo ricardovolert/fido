@@ -12,8 +12,9 @@ from tinydb.middlewares import CachingMiddleware
 from hgbb import get_pr_info, _bb_apicall
 
 outputs = []
-DB = tinydb.TinyDB("/mnt/db/slack.json",
-                   storage=CachingMiddleware(JSONStorage))
+#DB = tinydb.TinyDB("/mnt/db/slack.json",
+#                   storage=CachingMiddleware(JSONStorage))
+DB = tinydb.TinyDB("/mnt/db/slack.json")
 JENKINS_TOKEN = os.environ.get("JENKINS_TOKEN")
 JENKINS_URL = os.environ.get("JENKINS_URL")
 SAGE_START_URL = os.environ.get("SAGE_START_URL")

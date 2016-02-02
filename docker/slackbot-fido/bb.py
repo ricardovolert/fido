@@ -179,7 +179,7 @@ class FidoHelpMe(FidoCommand):
     def run(self, match, data):
         msg = ""
         for command in FIDO_COMMANDS:
-            msg += command.regex.__self__.pattern
+            msg += "`{}`".format(command.regex.__self__.pattern)
             if command.help_msg is not None:
                 msg += " " + command.help_msg
             msg += "\n"

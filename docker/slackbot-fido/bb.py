@@ -68,6 +68,7 @@ def _build_job(data, prno, docs=False):
 
 class FidoCommand:
     regex = None
+    help_msg = None
 
     def __call__(self, data):
         s = self.regex(data["text"])
@@ -172,10 +173,22 @@ class FidoUserRepoForget(FidoCommand):
             outputs.append([data['channel'], "Roger!"])
 
 
+class FidoHelpMe(FidoCommand):
+    regex = re.compile(r'^.*(fido:? help).*$', re.IGNORECASE).match
+
+    def run(self, match, data):
+        for command in FIDO_COMMANDS:
+            msg = command.regex.__self__.pattern
+            if command.help_msg is not None:
+                msg += " " + command.help_msg
+            msg += "\n"
+        outputs.append([data['channel'], msg])
+
+
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),
     FidoBuildDocs(), FidoUserRepoQuery(), FidoUserRepoKeep(),
-    FidoUserRepoForget()
+    FidoUserRepoForget(), FidoHelpMe() 
 ]
 
 

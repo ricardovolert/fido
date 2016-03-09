@@ -19,7 +19,7 @@ RUN cd /tmp && \
   cd /tmp && rm -rf embree
 
 RUN mkdir -p /home/jovyan/.config/matplotlib/ && \
-  cp /opt/conda/lib/python3.4/site-packages/matplotlib/mpl-data/matplotlibrc \
+  cp /opt/conda/lib/python3.5/site-packages/matplotlib/mpl-data/matplotlibrc \
      /home/jovyan/.config/matplotlib/ && \
   chown jovyan /home/jovyan/.config/matplotlib/ && \
   sed -i /home/jovyan/.config/matplotlib/matplotlibrc \

@@ -47,9 +47,7 @@ def _build_job(data, prno, docs=False):
                                               JENKINS_TOKEN)]
     else:
         msg = "will test PR %i by %s" % (prno, author)
-        urls = ["%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite_dev",
-                                              JENKINS_TOKEN),
-                "%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite_py34",
+        urls = ["%s/job/%s/build?token=%s" % (JENKINS_URL, "yt_testsuite",
                                               JENKINS_TOKEN)]
     params = [
         {'name': 'IRKMSG', 'value': msg},

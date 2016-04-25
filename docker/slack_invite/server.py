@@ -22,7 +22,7 @@ class WrapHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Headers', 'Content-type')
 
     def post(self):
-        data = json.loads(self.request.body)
+        data = json.loads(self.request.body.decode('utf8'))
         if "name" not in data:
             self.finish()
             return

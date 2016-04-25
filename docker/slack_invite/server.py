@@ -4,9 +4,8 @@ import tornado.options
 import tornado.web
 from tornado.options import define, options
 import os
-import smtplib
-from email.mime.text import MIMEText
 import json
+import slacker
 
 define("port", default=80, help="run on the given port", type=int)
 
@@ -26,21 +25,10 @@ class WrapHandler(tornado.web.RequestHandler):
         if "name" not in data:
             self.finish()
             return
-        text = "Please add {name} {email} to slack".format(**data)
-        msg = MIMEText(text, 'plain')
-        msg['Subject'] = "New Slack user request"
-        msg['From']    = "yt slack <noreply@yt-project.org>"
-        msg['To']      = "xarthisius.kk@gmail.com"
-        msg['CC']      = "mjturk@gmail.com"
+        slack = Slacker(os.environ.get("SLACK_TOKEN")
 
-        username = os.environ['MANDRILL_USERNAME']
-        password = os.environ['MANDRILL_PASSWORD']
-
-        s = smtplib.SMTP('smtp.mandrillapp.com', 587)
-        s.login(username, password)
-        s.sendmail(msg['From'], msg['To'], msg.as_string())
-        s.quit()
-                
+        text = "User: {name} email: {email} requested access slack".format(**data)
+        slack.chat.post_message("#general", text)
         self.finish()
 
 if __name__ == "__main__":

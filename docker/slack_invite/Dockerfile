@@ -1,10 +1,6 @@
-FROM debian:sid
+FROM python:3.4-wheezy
 
-RUN apt-get -qqy update && \
-  apt-get install -qqy python3-tornado && \
-  apt-get clean && \ 
-  rm -rf /var/lib/apt/lists/*
-
+RUN pip install slacker tornado
 ADD ./server.py /tmp/server.py
 EXPOSE 80
 CMD ["python3", "/tmp/server.py"]

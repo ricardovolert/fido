@@ -5,9 +5,10 @@ import tornado.web
 from tornado.options import define, options
 import os
 import json
-import slacker
+from slacker import Slacker
 
 define("port", default=80, help="run on the given port", type=int)
+
 
 class WrapHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
@@ -25,9 +26,13 @@ class WrapHandler(tornado.web.RequestHandler):
         if "name" not in data:
             self.finish()
             return
-        slack = Slacker(os.environ.get("SLACK_TOKEN")
+        slack = Slacker(os.environ.get("SLACK_TOKEN"))
 
-        text = "User: {name} email: {email} requested access slack".format(**data)
+        text = (
+            "User: {name} "
+            "email: {email} "
+            "requested access to slack"
+        ).format(**data)
         slack.chat.post_message("#general", text)
         self.finish()
 

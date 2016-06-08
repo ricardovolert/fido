@@ -603,7 +603,7 @@ cmdtable = {
      'hg bblink [-l lineno] filename'),
 }
 
-commands.norepo += ' bbcreate'
+#commands.norepo += ' bbcreate'
 
 def extsetup(ui):
     revset.symbols['prhead'] = prhead

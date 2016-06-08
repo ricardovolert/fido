@@ -1,4 +1,4 @@
-FROM centos:5
+FROM centos:6
 
 RUN yum update -q -y && \
   yum install -y wget gcc gcc-c++ bzip2 openssh-server && \

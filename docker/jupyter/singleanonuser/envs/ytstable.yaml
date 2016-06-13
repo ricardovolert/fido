@@ -1,14 +1,19 @@
 dependencies:
-- ipython
-- ipykernel
-- yt
-- requests
-- cython
-- scipy
+- h5py
 - numexpr
+- numpy
+- cython
+- requests
+- scipy
 - ipywidgets
+- ipykernel
 - scikit-image
+- pandas
+- yt
+- netcdf4
 - pip:
    - slacker
    - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
    - galanyl
+   - girder-client
+   - jupyter_cms

@@ -223,10 +223,31 @@ class FidoListJenkinsJobs(FidoCommand):
         outputs.append([data['channel'], msg])
 
 
+class FidoCancelJenkinsBuild(FidoCommand):
+    regex = re.compile(r'cancel build\s+(\w+)\s+(\d+)').match
+
+    def run(self, match, data):
+        server = jenkins.Jenkins(JENKINS_URL, username=JENKINS_USER,
+                                 password=JENKINS_USER_PASS)
+        server.cancel_queue(match[0], match[1])
+        outputs.append([data['channel'], "Canceling {} #{}".format(match)])
+
+
+class FidoAbortJenkinsBuild(FidoCommand):
+    regex = re.compile(r'abort build\s+(\w+)\s+(\d+)').match
+
+    def run(self, match, data):
+        server = jenkins.Jenkins(JENKINS_URL, username=JENKINS_USER,
+                                 password=JENKINS_USER_PASS)
+        server.stop_build(match[0], match[1])
+        outputs.append([data['channel'], "Aborting {} #{}".format(match)])
+
+
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),
     FidoBuildDocs(), FidoUserRepoQuery(), FidoUserRepoKeep(),
-    FidoUserRepoForget(), FidoHelpMe(), FidoListJenkinsJobs()
+    FidoUserRepoForget(), FidoHelpMe(), FidoListJenkinsJobs(),
+    FidoCancelJenkinsBuild(), FidoAbortJenkinsBuild()
 ]
 
 

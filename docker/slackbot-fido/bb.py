@@ -7,11 +7,14 @@ import logging
 import hglib
 import tempfile
 import tinydb
+import jenkins
 from hgbb import get_pr_info, _bb_apicall
 
 outputs = []
 DB = tinydb.TinyDB("/mnt/db/slack.json")
 JENKINS_TOKEN = os.environ.get("JENKINS_TOKEN")
+JENKINS_USER = os.environ.get("JENKINS_USER", "fido")
+JENKINS_USER_PASS = os.environ.get("JENKINS_USER_PASS")
 JENKINS_URL = os.environ.get("JENKINS_URL")
 SAGE_START_URL = os.environ.get("SAGE_START_URL")
 SAGE_CLIENT_URL = os.environ.get("SAGE_CLIENT_URL", "http://somewhere.org")
@@ -184,10 +187,45 @@ class FidoHelpMe(FidoCommand):
         outputs.append([data['channel'], msg])
 
 
+def _get_build_params(build):
+    build_desc = '???'
+    for action in build["actions"]:
+        try:
+            for param in action["parameters"]:
+                if param["name"] == "IRKMSG":
+                    build_desc = param["value"]
+        except KeyError:
+            pass
+    return build_desc
+
+
+class FidoListJenkinsJobs(FidoCommand):
+    regex = re.compile(r'list job\s+(\w+)').match
+
+    def run(self, match, data):
+        job_name = match[0]
+        msg = ''
+        server = jenkins.Jenkins(JENKINS_URL, username=JENKINS_USER,
+                                 password=JENKINS_USER_PASS)
+        next_bn = server.get_job_info(job_name)['nextBuildNumber']
+        last_job_id = next_bn - 1
+        last_job = server.get_build_info(job_name, last_job_id)
+        if last_job["building"]:
+            build_desc = _get_build_params(last_job)
+            msg += "Current build {} (id: {})\n".format(build_desc, last_job)
+
+        for queued_build in server.get_queue_info():
+            if queued_build["name"] == job_name:
+                build_desc = _get_build_params(queued_build)
+                msg += "Queued build {} (id: {})\n".format(build_desc,
+                                                           queued_build['id'])
+        outputs.append([data['channel'], msg])
+
+
 FIDO_COMMANDS = [
     FidoGetPRInfo(), FidoGetIssueInfo(), FidoStartSage(), FidoTestPR(),
     FidoBuildDocs(), FidoUserRepoQuery(), FidoUserRepoKeep(),
-    FidoUserRepoForget(), FidoHelpMe() 
+    FidoUserRepoForget(), FidoHelpMe(), FidoListJenkinsJobs()
 ]
 
 

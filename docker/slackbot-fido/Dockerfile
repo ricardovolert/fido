@@ -1,7 +1,7 @@
 FROM debian:sid
 
 RUN apt-get -qy update && \
-   apt-get -qyy install unzip curl python-requests python-websocket \
+   apt-get -qyy install unzip curl python-requests python-websocket python-jenkins \
      python-daemon python-yaml python-setuptools python-future mercurial python-hglib && \
    apt-get clean && \
    rm -rf /var/lib/apt/lists/*

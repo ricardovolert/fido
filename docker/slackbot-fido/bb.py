@@ -212,7 +212,8 @@ class FidoListJenkinsJobs(FidoCommand):
         last_job = server.get_build_info(job_name, last_job_id)
         if last_job["building"]:
             build_desc = _get_build_params(last_job)
-            msg += "Current build {} (id: {})\n".format(build_desc, last_job)
+            msg += "Current build {} (id: {})\n".format(build_desc,
+                                                        last_job['id'])
 
         for queued_build in server.get_queue_info():
             if queued_build["name"] == job_name:

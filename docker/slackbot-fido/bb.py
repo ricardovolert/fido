@@ -229,8 +229,8 @@ class FidoCancelJenkinsBuild(FidoCommand):
     def run(self, match, data):
         server = jenkins.Jenkins(JENKINS_URL, username=JENKINS_USER,
                                  password=JENKINS_USER_PASS)
-        server.cancel_queue(match[0], match[1])
-        outputs.append([data['channel'], "Canceling {} #{}".format(match)])
+        server.cancel_queue(int(match[1]))
+        outputs.append([data['channel'], "Canceling {} #{}".format(*match)])
 
 
 class FidoAbortJenkinsBuild(FidoCommand):
@@ -239,8 +239,8 @@ class FidoAbortJenkinsBuild(FidoCommand):
     def run(self, match, data):
         server = jenkins.Jenkins(JENKINS_URL, username=JENKINS_USER,
                                  password=JENKINS_USER_PASS)
-        server.stop_build(match[0], match[1])
-        outputs.append([data['channel'], "Aborting {} #{}".format(match)])
+        server.stop_build(match[0], int(match[1]))
+        outputs.append([data['channel'], "Aborting {} #{}".format(*match)])
 
 
 FIDO_COMMANDS = [

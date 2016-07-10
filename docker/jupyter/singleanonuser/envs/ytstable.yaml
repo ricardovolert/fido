@@ -11,6 +11,7 @@ dependencies:
 - pandas
 - yt
 - netcdf4
+- astropy
 - pip:
    - slacker
    - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2

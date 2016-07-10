@@ -12,6 +12,7 @@ dependencies:
 - scikit-image
 - pandas
 - yt
+- astropy
 - netcdf4
 - pip:
   - slacker

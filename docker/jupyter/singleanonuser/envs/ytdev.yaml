@@ -14,9 +14,11 @@ dependencies:
 - yt
 - astropy
 - netcdf4
+- icu
 - pip:
   - slacker
   - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
   - galanyl
   - girder-client
   - jupyter_cms
+  - trident

@@ -1,0 +1,4 @@
+[Trident]
+ion_table_dir = /home/jovyan/.trident
+ion_table_file = hm2012_hr.h5
+

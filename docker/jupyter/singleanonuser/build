@@ -1,1 +1,1 @@
-docker build -t xarthisius/singleanonuser .
+docker build -t xarthisius/ythub-jupyter .

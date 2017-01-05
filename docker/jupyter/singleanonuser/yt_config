@@ -1,6 +1,6 @@
 [yt]
 __parallel = True
 suppressStreamLogging = True
-test_storage_dir = /mnt/yt
-test_data_dir = /mnt/yt
+test_storage_dir = /mnt/vol0/yt_data
+test_data_dir = /mnt/vol0/yt_data
 serialize = False

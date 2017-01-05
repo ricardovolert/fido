@@ -8,6 +8,7 @@ for pyver in 2 3; do
        conda env create -q -p $CONDA_ENVS/py${pyver}-${branch} -f=/tmp/${pyver}yt${branch}.yaml
        source activate $CONDA_ENVS/py${pyver}-${branch}
        python -m ipykernel install --user --name "py${pyver}-${branch}" --display-name "py${pyver} (${branch})"
+       jupyter nbextension enable --py widgetsnbextension --sys-prefix
     done
 done
 

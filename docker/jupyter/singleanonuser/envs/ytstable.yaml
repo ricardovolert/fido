@@ -1,21 +1,15 @@
+channels:
+   - conda-forge
 dependencies:
 - h5py
-- numexpr
-- numpy
-- cython
-- requests
-- scipy
-- ipywidgets
-- ipykernel
-- scikit-image
-- pandas
-- yt
 - netcdf4
+- scipy
 - astropy
-- icu
+- yt
+- pandas
+- ipywidgets
 - pip:
-   - slacker
-   - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
-   - galanyl
-   - girder-client
-   - jupyter_cms
+  - https://bitbucket.org/data-exp-lab/dxl-tools/get/default.tar.bz2
+  - girder-client
+  - jupyter_cms
+  - trident

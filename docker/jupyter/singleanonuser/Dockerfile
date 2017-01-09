@@ -20,6 +20,8 @@ COPY ./config.tri /home/jovyan/.trident/config.tri
 
 RUN find /opt -name "sdf" -type d -exec sed -i {}/data_structures.py -e 's/float32/float64/' \;
 
+RUN conda install jupyterlab
+
 #RUN wget -q "https://bitbucket.org/yt_analysis/yt/raw/tip/doc/source/quickstart/1)_Introduction.ipynb" && \
 #    wget -q "https://bitbucket.org/yt_analysis/yt/raw/tip/doc/source/quickstart/2)_Data_Inspection.ipynb" && \
 #    wget -q "https://bitbucket.org/yt_analysis/yt/raw/tip/doc/source/quickstart/3)_Simple_Visualization.ipynb" && \

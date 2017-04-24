@@ -1,0 +1,5 @@
+git+https://github.com/Xarthisius/python-rtmbot
+requests
+tinydb
+python-jenkins
+pygithub3

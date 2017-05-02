@@ -9,13 +9,12 @@ class FidoPlugin(Plugin):
     def process_message(self, data):
         if 'text' not in data:
             return
-        try:
-            username = data['username']
-            if username == 'yt-fido' or username.startswith('RatThing'):
-                logging.info("Won't talk to myself")
-                return
-        except KeyError:
-            pass
+
+        me = data.get('username') == 'yt-fido'
+        bot_message = data.get('subtype') == 'bot_message'
+        if me or bot_message:
+            logging.info("Won't talk to bots")
+            return
 
         outputs = self.outputs
         for command in FIDO_COMMANDS:
